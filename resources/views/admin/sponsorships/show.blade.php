@@ -76,37 +76,67 @@
                     </div>
                 </div>
 
-                <!-- Status: its own row -->
+            <!-- Status: its own row -->
+            <div>
+                <p class="text-gray-600 dark:text-gray-300"><strong>Status:</strong></p>
+                @if ($application->status === 'Pending')
+                    <span class="inline-block px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 font-semibold">
+                        {{ ucfirst($application->status) }}
+                    </span>
+                @elseif ($application->status === 'Approved')
+                    <span class="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 font-semibold">
+                        {{ ucfirst($application->status) }}
+                    </span>
+                @else
+                    <span class="inline-block px-2 py-1 rounded-full bg-red-100 text-red-800 font-semibold">
+                        {{ ucfirst($application->status) }}
+                    </span>
+                @endif
+            </div>
+
+            <!-- Approved by: show if status is Approved or Pending -->
+            @if ($application->status === 'Approved' || $application->status === 'Pending')
                 <div>
-                    <p class="text-gray-600 dark:text-gray-300"><strong>Status:</strong></p>
-                    @if ($application->status === 'Pending')
-                        <span class="inline-block px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 font-semibold">
-                            {{ ucfirst($application->status) }}
-                        </span>
-                    @elseif ($application->status === 'Approved')
-                        <span class="inline-block px-2 py-1 rounded-full bg-green-100 text-green-800 font-semibold">
-                            {{ ucfirst($application->status) }}
-                        </span>
-                    @else
-                        <span class="inline-block px-2 py-1 rounded-full bg-red-100 text-red-800 font-semibold">
-                            {{ ucfirst($application->status) }}
-                        </span>
-                    @endif
+                    <p class="text-gray-600 dark:text-gray-300"><strong>Approved by:</strong></p>
+                    <p class="text-gray-900 dark:text-gray-100">
+                        {{ $application->approved_by ?? 'Not yet approved' }}
+                    </p>
                 </div>
+            @endif
+
+            <!-- Denial reason: show if status is Denied or Pending -->
+            @if ($application->status === 'Denied' || $application->status === 'Pending')
+                <div>
+                    <p class="text-gray-600 dark:text-gray-300"><strong>Denial reason:</strong></p>
+                    <p class="text-gray-900 dark:text-gray-100">
+                        {{ $application->denial_reason ?? 'Not yet denied' }}
+                    </p>
+                </div>
+            @endif
+
+
 
 
                 <!-- Action Buttons -->
-                <div class="mt-6 space-x-2">
-                    <form action="{{ route('admin.sponsorships.approve', $application->id) }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="bg-green-100 text-green-800 px-4 py-2 rounded hover:bg-green-200">Approve</button>
-                    </form>
+                <div class="mt-6 space-y-2">
+                    @if ($application->status !== 'Approved')
+                        <!-- Approve button -->
+                        <form action="{{ route('admin.sponsorships.approve', $application->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-green-100 text-green-800 px-4 py-2 rounded hover:bg-green-200">Approve</button>
+                        </form>
+                    @endif
 
-                    <form action="{{ route('admin.sponsorships.deny', $application->id) }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="bg-red-100 text-red-800 px-4 py-2 rounded hover:bg-red-200">Deny</button>
-                    </form>
+                    @if ($application->status !== 'Denied')
+                        <!-- Deny button and textarea (same line, below Approve) -->
+                        <form action="{{ route('admin.sponsorships.deny', $application->id) }}" method="POST" class="flex flex-col sm:flex-row sm:items-center sm:space-x-2">
+                            @csrf
+                            <textarea name="denial_reason" required placeholder="Reason for denial" class="border rounded p-2 sm:w-64 mb-2 sm:mb-0"></textarea>
+                            <button type="submit" class="bg-red-100 text-red-800 px-4 py-2 rounded hover:bg-red-200">Deny</button>
+                        </form>
+                    @endif
 
+                    <!-- Back to List link (always shown) -->
                     <a href="{{ route('admin.sponsorships.index') }}" class="inline-block bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200">Back to List</a>
                 </div>
             </div>

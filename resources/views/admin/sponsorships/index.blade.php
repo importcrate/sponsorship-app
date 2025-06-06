@@ -30,12 +30,15 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $app->first_name }} {{ $app->last_name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $app->team_name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{{ $app->email }}</td>
+                                @php
+                                    $status = strtolower($app->status);
+                                @endphp
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    @if ($app->status === 'Pending')
+                                    @if ($status === 'pending')
                                         <span class="inline-flex px-2 py-1 text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                             Pending
                                         </span>
-                                    @elseif ($app->status === 'Approved')
+                                    @elseif ($status === 'approved')
                                         <span class="inline-flex px-2 py-1 text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                             Approved
                                         </span>
@@ -45,18 +48,10 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <a href="{{ route('admin.sponsorships.show', $app->id) }}" class="text-indigo-600 hover:underline">View</a>
-                                    <form action="{{ route('admin.sponsorships.approve', $app->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        <button type="submit" class="bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">Approve</button>
-                                    </form>
-                                    <form action="{{ route('admin.sponsorships.deny', $app->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        <button type="submit" class="bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">Deny</button>
-                                    </form>
-                                </td>
 
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="{{ route('admin.sponsorships.show', $app->id) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                            </td>
                             </tr>
                         @endforeach
                     </tbody>

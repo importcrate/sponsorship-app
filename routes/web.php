@@ -5,9 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SponsorshipApplicationController;
 use App\Http\Controllers\AdminSponsorshipController;
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
+
+// Homepage route
+Route::get('/', [SponsorshipApplicationController::class, 'create'])->name('sponsorship.apply');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -20,7 +23,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Sponsorship application routes
-Route::get('/sponsorship/apply', [SponsorshipApplicationController::class, 'create'])->name('sponsorship.apply');
+Route::get('/sponsorship/apply', [SponsorshipApplicationController::class, 'create']);
 Route::post('/sponsorship/apply', [SponsorshipApplicationController::class, 'store'])->name('sponsorship.store');
 
 // Admin-only sponsorship management routes

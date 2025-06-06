@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\SponsorshipApplication;
 use Illuminate\Http\Request;
+use App\Mail\ApplicationStatusUpdated;
+use Illuminate\Support\Facades\Mail;
 
 
 class AdminSponsorshipController extends Controller
@@ -27,18 +29,32 @@ class AdminSponsorshipController extends Controller
     {
         $application = SponsorshipApplication::findOrFail($id);
         $application->status = 'Approved';
+        $application->approved_by = auth()->user()->name; // record who approved
         $application->save();
-        
-        return redirect()->route('admin.sponsorships.index')->with('success', 'Application approved!');
+
+        // Send email
+        Mail::to($application->email)->send(new ApplicationStatusUpdated($application));
+
+        return redirect()->route('admin.sponsorships.index')->with('success', 'Application approved and email sent.');
     }
+
 
     //  Deny an application
-    public function deny($id)
+    public function deny(Request $request, $id)
     {
+        $request->validate([
+            'denial_reason' => 'required|string|max:1000'
+        ]);
+
         $application = SponsorshipApplication::findOrFail($id);
         $application->status = 'Denied';
+        $application->denial_reason = $request->input('denial_reason');
         $application->save();
 
-        return redirect()->route('admin.sponsorships.index')->with('success', 'Application denied');
+        // Send email to the applicant
+        Mail::to($application->email)->send(new ApplicationStatusUpdated($application));
+
+        return redirect()->route('admin.sponsorships.index')->with('success', 'Application denied and email sent.');
     }
+
 }
