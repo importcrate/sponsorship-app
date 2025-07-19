@@ -32,7 +32,13 @@ Route::middleware('auth')->group(function () {
 });
 
 // Sponsorship application routes
-Route::post('/sponsorship/apply', [SponsorshipApplicationController::class, 'store'])->name('sponsorship.store');
+Route::post('/sponsorship/apply', [SponsorshipApplicationController::class, 'store'])
+    ->middleware([
+        \App\Http\Middleware\HoneypotMiddleware::class,
+        'throttle:5,1', // Allow max 5 submissions per minute per IP
+    ])
+    ->name('sponsorship.store');
+
 Route::get('/sponsorship/apply', [SponsorshipApplicationController::class, 'create'])->name('sponsorship.apply');
 
 

@@ -44,7 +44,11 @@
 
             <form action="{{ route('sponsorship.store') }}" method="POST" class="space-y-4 bg-white p-6 rounded shadow">
                 @csrf
-
+                <!-- Honeypot field -->
+                <div style="display: none;">
+                    <label for="company_name">Company Name</label>
+                    <input type="text" name="company_name" id="company_name" autocomplete="off">
+                </div>
                 <!-- First Name and Last Name on same row -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
