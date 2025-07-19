@@ -4,27 +4,37 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SponsorshipApplicationController;
 use App\Http\Controllers\AdminSponsorshipController;
+use App\Models\Announcement;
+use App\Http\Controllers\AnnouncementController;
 
 /* Route::get('/', function () {
     return view('welcome');
 }); */
 
 // Homepage route
-Route::get('/', [SponsorshipApplicationController::class, 'create'])->name('sponsorship.apply');
+//Route::get('/', [SponsorshipApplicationController::class, 'create'])->name('sponsorship.apply');
+
+Route::get('/', function () {
+    return view('home');
+})->name('home');
+
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $announcement = Announcement::latest()->first(); // just get 1 for now
+    return view('dashboard', compact('announcement'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/announcement/update', [AnnouncementController::class, 'update'])->name('announcement.update');
 });
 
 // Sponsorship application routes
-Route::get('/sponsorship/apply', [SponsorshipApplicationController::class, 'create']);
 Route::post('/sponsorship/apply', [SponsorshipApplicationController::class, 'store'])->name('sponsorship.store');
+Route::get('/sponsorship/apply', [SponsorshipApplicationController::class, 'create'])->name('sponsorship.apply');
+
 
 // Admin-only sponsorship management routes
 Route::middleware(['auth', 'admin'])->group(function () {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateSponsorshipApplicationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,11 +18,8 @@ return new class extends Migration
             $table->string('team_name')->nullable();
             $table->string('email');
             $table->string('cell_phone');
-            $table->string('street_address');
-            $table->string('street_address_2')->nullable();
             $table->string('city');
             $table->string('state');
-            $table->string('zip_code');
             $table->string('instagram_username');
             $table->string('tiktok_username')->nullable();
             $table->string('vehicle_year');

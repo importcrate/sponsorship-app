@@ -1,3 +1,8 @@
+@section('title', 'Car Shows. Style. Squad Vibes. This is the Mod Squad.')
+
+@section('meta')
+    <meta name="description" content="Not just a sponsorship — a statement. Import Crate’s Mod Squad connects car lovers across the country who live the culture. Style matters. Presence matters. Your build tells a story — join us.">
+@endsection
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -11,9 +16,31 @@
                 <p class="text-green-600 font-semibold">{{ session('success') }}</p>
             @endif
 
-            <p class="mb-4 text-gray-700">
-                <strong>Application Process:</strong> Interested in joining the Import Crate team? Fill out the application form below to apply for Mod Squad or Import Crate Legends. We review applications on a rolling basis and will notify you of your sponsorship status within two weeks of your submission.
-            </p>
+            <div class="mb-6 text-gray-700 space-y-4">
+                <p class="font-semibold text-lg">
+                    Think you’ve got what it takes to join the Mod Squad?
+                </p>
+                <p>
+                    We review applications with care — we’re not just looking for mod lists, we’re looking for people who represent the scene the right way.
+                    Fill out the form below to apply. We typically respond within 5 to 7 days. If approved, you'll receive instructions to activate your sponsorship and access the private Mod Squad member portal.
+                </p>
+            </div>
+
+            @if ($errors->any())
+                <div class="mb-4 p-4 border border-red-400 bg-red-100 text-red-700 rounded">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="mb-4 p-4 border border-green-400 bg-green-100 text-green-700 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
 
             <form action="{{ route('sponsorship.store') }}" method="POST" class="space-y-4 bg-white p-6 rounded shadow">
                 @csrf
@@ -51,7 +78,7 @@
                     </div>
                 </div>
 
-                <div>
+{{--                 <div>
                     <label class="block font-medium text-sm text-gray-700">Street Address:</label>
                     <input type="text" name="street_address" required
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -61,17 +88,17 @@
                     <label class="block font-medium text-sm text-gray-700">Street Address 2:</label>
                     <input type="text" name="street_address_2"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                </div>
+                </div> --}}
 
                 <!-- City, State, Zip on same row -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block font-medium text-sm text-gray-700">City:</label>
+                        <label class="block font-medium text-sm text-gray-700">Base City:</label>
                         <input type="text" name="city" required
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block font-medium text-sm text-gray-700">State:</label>
+                        <label class="block font-medium text-sm text-gray-700">Base State:</label>
                         <select name="state" required
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="" disabled selected>Select a state</option>
@@ -80,11 +107,11 @@
                             @endforeach
                         </select>
                     </div>
-                    <div>
+{{--                     <div>
                         <label class="block font-medium text-sm text-gray-700">Zip Code:</label>
                         <input type="text" name="zip_code" required
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -139,8 +166,8 @@
                     In exchange for product sponsorship, Import Crate requires the following:
                 </p>
                 <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4">
-                    <li>Import Crate brand decals to be placed on the vehicle in prominent locations</li>
-                    <li>Social media posts including images of the vehicle with Import Crate products accompanied by the tag #importcrate and @importcrate.</li>
+                    <li>Import Crate and Mod Squad brand decals to be placed on the vehicle in prominent locations</li>
+                    <li>Social media posts including images of the vehicle with Import Crate products accompanied by the tags #importcrate #modsquad and @importcrate.</li>
                     <li>During Car Shows/Events, we require product display in or by your vehicle.</li>
                 </ul>
 
@@ -164,6 +191,19 @@
                         <label class="font-medium text-gray-700">
                             I will display an Import Crate banner or decal on my vehicle.
                         </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700">Password:</label>
+                        <input type="password" name="password" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700">Confirm Password:</label>
+                        <input type="password" name="password_confirmation" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                 </div>
 

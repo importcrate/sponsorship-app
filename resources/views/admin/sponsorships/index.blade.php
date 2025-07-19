@@ -1,3 +1,8 @@
+@section('title', 'Car Shows. Style. Squad Vibes. This is the Mod Squad.')
+
+@section('meta')
+    <meta name="description" content="Not just a sponsorship — a statement. Import Crate’s Mod Squad connects car lovers across the country who live the culture. Style matters. Presence matters. Your build tells a story — join us.">
+@endsection
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
