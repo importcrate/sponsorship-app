@@ -40,9 +40,11 @@ class SponsorshipSubmitted extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'welcome',
+            view: 'emails.sponsorship.submitted',
+            with: [
+                'user' => $this->user,
+            ],
         );
-
     }
 
     /**
