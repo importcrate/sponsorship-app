@@ -40,8 +40,9 @@ class SponsorshipSubmitted extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.sponsorship.submitted',
+            view: 'welcome',
         );
+
     }
 
     /**
