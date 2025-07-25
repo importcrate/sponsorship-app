@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Models\SponsorshipApplication;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\SponsorshipSubmitted;
 
 class SponsorshipApplicationController extends Controller
@@ -14,18 +14,19 @@ class SponsorshipApplicationController extends Controller
     public function create()
     {
         $states = [
-        'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
-        'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
-        'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
-        'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-        'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
-    ];
+            'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+            'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+            'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+            'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+            'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
+        ];
+
         return view('sponsorship.apply', compact('states'));
     }
 
     public function store(Request $request)
     {
-        // Validate the form data
+        // Validate form fields
         $validated = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -49,23 +50,7 @@ class SponsorshipApplicationController extends Controller
             'event_preferences' => 'nullable|array',
         ]);
 
-        // Handle car categories and event preferences
-        $validated['car_categories'] = $request->input('car_categories', []);
-        $validated['car_category_other'] = $request->input('car_category_other');
-        $validated['event_preferences'] = $request->input('event_preferences', []);
-
-        // Convert arrays to JSON for database storage
-        $validated['car_categories'] = json_encode($validated['car_categories']);
-        $validated['event_preferences'] = json_encode($validated['event_preferences']);
-
-        // Convert checkboxes to booleans
-        $validated['agree_rules'] = $request->has('agree_rules');
-        $validated['agree_banner'] = $request->has('agree_banner');
-
-        // Add current date
-        $validated['date_submitted'] = now();
-
-        // Create user account
+        // Create user and log in
         $user = User::create([
             'name' => $validated['first_name'] . ' ' . $validated['last_name'],
             'email' => $validated['email'],
@@ -73,29 +58,37 @@ class SponsorshipApplicationController extends Controller
         ]);
         auth()->login($user);
 
-        // Remove user-specific fields from $validated before inserting into application table
-        unset($validated['password'], $validated['password_confirmation']);
+        // Prepare sponsorship application data
+        $applicationData = [
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'team_name' => $validated['team_name'] ?? null,
+            'email' => $validated['email'],
+            'cell_phone' => $validated['cell_phone'],
+            'city' => $validated['city'],
+            'state' => $validated['state'],
+            'instagram_username' => $validated['instagram_username'],
+            'tiktok_username' => $validated['tiktok_username'] ?? null,
+            'vehicle_year' => $validated['vehicle_year'],
+            'vehicle_make' => $validated['vehicle_make'],
+            'vehicle_model' => $validated['vehicle_model'],
+            'modifications' => $validated['modifications'],
+            'other_sponsors' => $validated['other_sponsors'] ?? null,
+            'agree_rules' => true,
+            'agree_banner' => true,
+            'car_categories' => json_encode($request->input('car_categories', [])),
+            'car_category_other' => $validated['car_category_other'] ?? null,
+            'event_preferences' => json_encode($request->input('event_preferences', [])),
+            'date_submitted' => now(),
+            'user_id' => $user->id,
+        ];
 
-        // Handle car categories and event preferences
-        $validated['car_categories'] = $request->input('car_categories', []);
-        $validated['car_category_other'] = $request->input('car_category_other');
-        $validated['event_preferences'] = $request->input('event_preferences', []);
-
-        // Convert arrays to JSON for database storage
-        $validated['car_categories'] = json_encode($validated['car_categories']);
-        $validated['event_preferences'] = json_encode($validated['event_preferences']);
-
-
-        // Add user_id reference to application
-        $validated['user_id'] = auth()->id();
-
-        // Save application
-        SponsorshipApplication::create($validated);
+        // Save sponsorship application
+        SponsorshipApplication::create($applicationData);
 
         // Send confirmation email
         Mail::to($user->email)->send(new SponsorshipSubmitted($user));
 
-        // Redirect to dashboard
         return redirect()->route('dashboard')->with('success', 'Your application has been submitted!');
     }
 }
