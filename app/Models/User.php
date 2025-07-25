@@ -44,4 +44,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function sponsorshipApplication()
+    {
+        return $this->hasOne(SponsorshipApplication::class);
+    }
+
+
 }

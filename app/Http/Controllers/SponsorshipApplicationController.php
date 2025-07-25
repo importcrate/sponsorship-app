@@ -30,7 +30,7 @@ class SponsorshipApplicationController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'team_name' => 'nullable|string',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:sponsorship_applications,email',
             'cell_phone' => 'required|string',
             'city' => 'required|string',
             'state' => 'required|string',
@@ -44,7 +44,19 @@ class SponsorshipApplicationController extends Controller
             'agree_rules' => 'accepted',
             'agree_banner' => 'accepted',
             'password' => 'required|string|confirmed|min:8',
+            'car_categories' => 'nullable|array',
+            'car_category_other' => 'nullable|string',
+            'event_preferences' => 'nullable|array',
         ]);
+
+        // Handle car categories and event preferences
+        $validated['car_categories'] = $request->input('car_categories', []);
+        $validated['car_category_other'] = $request->input('car_category_other');
+        $validated['event_preferences'] = $request->input('event_preferences', []);
+
+        // Convert arrays to JSON for database storage
+        $validated['car_categories'] = json_encode($validated['car_categories']);
+        $validated['event_preferences'] = json_encode($validated['event_preferences']);
 
         // Convert checkboxes to booleans
         $validated['agree_rules'] = $request->has('agree_rules');
@@ -64,8 +76,18 @@ class SponsorshipApplicationController extends Controller
         // Remove user-specific fields from $validated before inserting into application table
         unset($validated['password'], $validated['password_confirmation']);
 
+        // Handle car categories and event preferences
+        $validated['car_categories'] = $request->input('car_categories', []);
+        $validated['car_category_other'] = $request->input('car_category_other');
+        $validated['event_preferences'] = $request->input('event_preferences', []);
+
+        // Convert arrays to JSON for database storage
+        $validated['car_categories'] = json_encode($validated['car_categories']);
+        $validated['event_preferences'] = json_encode($validated['event_preferences']);
+
+
         // Add user_id reference to application
-        $validated['user_id'] = $user->id;
+        $validated['user_id'] = auth()->id();
 
         // Save application
         SponsorshipApplication::create($validated);

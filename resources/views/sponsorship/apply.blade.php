@@ -6,7 +6,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Sponsorship Application
+            Apply to Join the Mod Squad
         </h2>
     </x-slot>
 
@@ -18,12 +18,13 @@
 
             <div class="mb-6 text-gray-700 space-y-4">
                 <p class="font-semibold text-lg">
-                    Think you’ve got what it takes to join the Mod Squad?
+                    Want to be part of the show?
                 </p>
-                <p>
-                    We review applications with care — we’re not just looking for mod lists, we’re looking for people who represent the scene the right way.
-                    Fill out the form below to apply. We typically respond within 5 to 7 days. If approved, you'll receive instructions to activate your sponsorship and access the private Mod Squad member portal.
-                </p>
+                <p>Mod Squad is Import Crate’s curated driver network — a growing list of standout builds that get invited to represent at car shows and meets across the scene.</p>
+
+                <p>If your build shows effort, direction, and potential — and if you rep the culture the right way — you may qualify. We're not just looking for clean mods. We’re looking for people who show up with pride.</p>
+
+                <p>We review every application carefully and typically respond within 5 to 7 days. If approved, you’ll gain access to our private portal for announcements and instructions on how to get invited to vetted events and partner shows hosted through CrateOS.</p>
             </div>
 
             @if ($errors->any())
@@ -135,6 +136,58 @@
                     </div>
                 </div>
 
+                <div class="mt-4">
+                    <label class="block font-medium text-sm text-gray-700 mb-2">Car Category (Select One or More):</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        @foreach ([
+                            'JDM', 'Euro', 'Domestic', 'VIP / Luxury',
+                            'Stance / Static', 'Track / Performance',
+                            'Off-Road', 'Itasha / Anime', 'Other'
+                        ] as $category)
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input type="checkbox" name="car_categories[]" value="{{ $category }}"
+                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                </div>
+                                <div class="ml-2 text-sm text-gray-700">
+                                    {{ $category }}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block font-medium text-sm text-gray-700">If Other, please specify:</label>
+                        <input type="text" name="car_category_other"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <label class="block font-medium text-sm text-gray-700 mb-2">What Type of Events Do You Want to Attend?</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        @foreach ([
+                            'Static Car Meets',
+                            'Car Shows / Judged Events',
+                            'Anime Conventions',
+                            'Track Days',
+                            'Vendor-Partnered Shows',
+                            'Private / Invite-Only Meets',
+                            'Local Community Events',
+                            'Just want to rep online'
+                        ] as $event)
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input type="checkbox" name="event_preferences[]" value="{{ $event }}"
+                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                </div>
+                                <div class="ml-2 text-sm text-gray-700">
+                                    {{ $event }}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
 
                 <!-- Vehicle Information section -->
                 <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6">Vehicle Information</h2>
@@ -165,14 +218,14 @@
                 </div>
 
                 <!-- Confirm Sponsorship Agreement -->
-                <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6">Confirm Sponsorship Agreement</h2>
+                <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6">Confirm Participation Requirements</h2>
                 <p class="text-gray-600 dark:text-gray-300 mt-1">
-                    In exchange for product sponsorship, Import Crate requires the following:
+                    By joining Mod Squad, you agree to represent Import Crate and uphold the standards of the program. As part of your participation, we require the following:
                 </p>
                 <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4">
-                    <li>Import Crate and Mod Squad brand decals to be placed on the vehicle in prominent locations</li>
-                    <li>Social media posts including images of the vehicle with Import Crate products accompanied by the tags #importcrate #modsquad and @importcrate.</li>
-                    <li>During Car Shows/Events, we require product display in or by your vehicle.</li>
+                    <li>Placement of official Import Crate / Mod Squad decals on your vehicle in prominent locations</li>
+                    <li>Regular social media posts featuring your build and Import Crate products, accompanied by the tags #importcrate #modsquad #crateos and tagging @importcrate and @crateonscene.</li>
+                    <li>When attending car shows or events as part of Mod Squad, you agree to display Import Crate products near or inside your vehicle, when provided</li>
                 </ul>
 
                 <div class="flex items-start">

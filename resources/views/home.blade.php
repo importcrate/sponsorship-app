@@ -12,15 +12,15 @@
                  alt="Mod Squad Logo"
                  class="w-64 sm:w-80 mb-2" />
 
-            <h1 class="text-3xl sm:text-4xl font-bold mb-2">Join the Mod Squad</h1>
+            <h1 class="text-3xl sm:text-4xl font-bold mb-2">Get Invited. Get Noticed. Get On Scene.</h1>
 
             <a href="{{ route('sponsorship.apply') }}"
                class="inline-block bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded shadow transition mb-4">
-                Apply for Sponsorship
+                Apply to Join the Mod Squad
             </a>
 
             <h2 class="text-lg sm:text-xl">
-                The Official Car Sponsorship Program of Import Crate
+                The Official show car network of Import Crate
             </h2>
         </div>
 
@@ -29,8 +29,8 @@
             <span>© 2025 Import Crate & Mod Squad</span>
             <span>
                 Powered by
-                <a href="https://importcrate.com" target="_blank" class="text-red-600 hover:underline font-medium">
-                    Import Crate
+                <a href="https://crateonscene.com" target="_blank" class="text-red-600 hover:underline font-medium">
+                    CrateOS
                 </a>
             </span>
         </footer>

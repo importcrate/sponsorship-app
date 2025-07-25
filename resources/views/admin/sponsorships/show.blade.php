@@ -35,8 +35,8 @@
 
                 <!-- Address: its own row -->
                 <div>
-                    <p class="text-gray-600 dark:text-gray-300"><strong>Address:</strong></p>
-                    <p class="text-gray-900 dark:text-gray-100">{{ $application->street_address }} {{ $application->street_address_2 }}, {{ $application->city }}, {{ $application->state }} {{ $application->zip_code }}</p>
+                    <p class="text-gray-600 dark:text-gray-300"><strong>Base Location:</strong></p>
+                    <p class="text-gray-900 dark:text-gray-100">{{ $application->city }}, {{ $application->state }}</p>
                 </div>
 
                 <!-- Instagram & TikTok: same row -->
@@ -67,6 +67,53 @@
                 <div>
                     <p class="text-gray-600 dark:text-gray-300"><strong>Other Sponsors:</strong></p>
                     <p class="text-gray-900 dark:text-gray-100">{{ $application->other_sponsors }}</p>
+                </div>
+
+                <!-- Event Preferences: New Section -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Event Preferences</h3>
+
+                    <!-- Car Categories -->
+                    <div class="mb-3">
+                        <p class="text-gray-600 dark:text-gray-300"><strong>Car Categories:</strong></p>
+                        @php
+                            $categories = $application->car_categories ? json_decode($application->car_categories, true) : [];
+                        @endphp
+                        @if (!empty($categories))
+                            <ul class="list-disc list-inside text-gray-900 dark:text-gray-100">
+                                @foreach ($categories as $cat)
+                                    <li>{{ $cat }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-gray-500 italic">No categories selected.</p>
+                        @endif
+                    </div>
+
+                    <!-- Car Category Other -->
+                    <div class="mb-3">
+                        <p class="text-gray-600 dark:text-gray-300"><strong>Other Category (if any):</strong></p>
+                        <p class="text-gray-900 dark:text-gray-100">
+                            {{ $application->car_category_other ?: 'None provided.' }}
+                        </p>
+                    </div>
+
+                    <!-- Event Types -->
+                    <div>
+                        <p class="text-gray-600 dark:text-gray-300"><strong>Types of Events Interested In:</strong></p>
+                        @php
+                            $events = $application->event_preferences ? json_decode($application->event_preferences, true) : [];
+                        @endphp
+                        @if (!empty($events))
+                            <ul class="list-disc list-inside text-gray-900 dark:text-gray-100">
+                                @foreach ($events as $event)
+                                    <li>{{ $event }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-gray-500 italic">No event preferences selected.</p>
+                        @endif
+                    </div>
                 </div>
 
                 <!-- Agree to Rules & Display Banner: same row -->
