@@ -43,8 +43,7 @@ return new class extends Migration {
             $table->timestamps();
 
             // Foreign keys (optional – disable if not using strict FKs)
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('approved_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');          
         });
     }
 
