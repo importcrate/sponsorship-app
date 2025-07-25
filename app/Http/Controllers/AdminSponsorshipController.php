@@ -57,4 +57,22 @@ class AdminSponsorshipController extends Controller
         return redirect()->route('admin.sponsorships.index')->with('success', 'Application denied and email sent.');
     }
 
+    //  Delete an application
+    public function destroy($id)
+    {
+        $application = SponsorshipApplication::with('user')->findOrFail($id);
+
+        // Soft delete the application
+        $application->delete();
+
+        // Delete the associated user
+        if ($application->user) {
+            $application->user->delete(); // hard delete (not soft)
+        }
+
+        return redirect()->route('admin.sponsorships.index')
+            ->with('success', 'Application and associated user deleted.');
+    }
+
+
 }

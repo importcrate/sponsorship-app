@@ -48,6 +48,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/sponsorships/{id}', [AdminSponsorshipController::class, 'show'])->name('admin.sponsorships.show');
     Route::post('/admin/sponsorships/{id}/approve', [AdminSponsorshipController::class, 'approve'])->name('admin.sponsorships.approve');
     Route::post('/admin/sponsorships/{id}/deny', [AdminSponsorshipController::class, 'deny'])->name('admin.sponsorships.deny');
+    Route::delete('/admin/sponsorships/{id}', [AdminSponsorshipController::class, 'destroy'])->name('admin.sponsorships.destroy');
 });
 
 

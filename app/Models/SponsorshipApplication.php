@@ -19,5 +19,9 @@ class SponsorshipApplication extends Model
             'car_categories', 'event_preferences', 'car_category_other', 'user_id',
         ];
 
+        public function user()
+        {
+            return $this->belongsTo(User::class);
+        }
 
 }

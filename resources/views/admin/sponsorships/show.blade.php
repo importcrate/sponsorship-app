@@ -190,7 +190,22 @@
 
                     <!-- Back to List link (always shown) -->
                     <a href="{{ route('admin.sponsorships.index') }}" class="inline-block bg-gray-100 text-gray-800 px-4 py-2 rounded hover:bg-gray-200">Back to List</a>
-                </div>
+
+                    <!-- Spacer -->
+                    <div class="my-8 border-t border-gray-300 dark:border-gray-700 pt-6">
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            Danger Zone — this action will delete the application and user account permanently.
+                        </p>
+
+                        <!-- Delete an application -->
+                        <form action="{{ route('admin.sponsorships.destroy', $application->id) }}" method="POST" onsubmit="return confirm('Are you absolutely sure? This will delete both the application and user account permanently.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded shadow">
+                                Delete Application and User
+                            </button>
+                        </form>
+                    </div>
             </div>
         </div>
     </div>
