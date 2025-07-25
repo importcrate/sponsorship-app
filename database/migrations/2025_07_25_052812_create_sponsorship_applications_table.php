@@ -33,7 +33,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id')->nullable()->index(); // Link to user if applicable
             $table->string('status')->default('pending'); // 'pending', 'approved', 'denied'
             $table->string('denial_reason')->nullable();
-            $table->unsignedBigInteger('approved_by')->nullable(); // ID of approving admin
+            $table->string('approved_by')->nullable(); // ID of approving admin
 
             $table->json('car_categories')->nullable();
             $table->string('car_category_other')->nullable();
