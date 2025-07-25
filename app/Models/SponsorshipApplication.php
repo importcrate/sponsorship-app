@@ -16,7 +16,7 @@ class SponsorshipApplication extends Model
             'status', 'denial_reason', 'approved_by',
             
             // ✅ Add these:
-            'car_categories', 'event_preferences', 'car_category_other',
+            'car_categories', 'event_preferences', 'car_category_other', 'user_id',
         ];
 
 
